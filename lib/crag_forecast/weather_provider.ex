@@ -16,14 +16,16 @@ defmodule CragForecast.WeatherProvider do
     - `:max_precipitation_probability` - Maximum precipitation probability percentage (float).
     - `:condition` - Weather condition (condition()).
   """
-  @type weather_window :: [%{
-          date: String.t(),
-          max_temperature_c: float(),
-          min_temperature_c: float(),
-          max_humidity_percent: float(),
-          max_precipitation_probability: float(),
-          condition: condition()
-        }]
+  @type weather_window :: [
+          %{
+            date: String.t(),
+            max_temperature_c: float(),
+            min_temperature_c: float(),
+            max_humidity_percent: float(),
+            max_precipitation_probability: float(),
+            condition: condition()
+          }
+        ]
 
   @callback get_weather_window(float(), float()) :: {:ok, weather_window()} | {:error, term()}
 end

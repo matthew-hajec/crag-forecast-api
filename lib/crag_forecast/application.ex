@@ -26,10 +26,12 @@ defmodule CragForecast.Application do
 
     # 4. If setup is successful, dynamically start the web server
     web_server_child_spec = {Bandit, plug: CragForecast.HTTP.Router, scheme: :http, port: @port}
+
     case Supervisor.start_child(pid, web_server_child_spec) do
       {:ok, _web_pid} ->
         Logger.info("Bandit web server started successfully.")
         {:ok, pid}
+
       {:error, reason} ->
         Logger.emergency("Failed to start the web server: #{inspect(reason)}")
         {:error, reason}
@@ -43,13 +45,16 @@ defmodule CragForecast.Application do
 
     # Load crag data
     Logger.info("Loading crag data...")
+
     case @crag_loader.load_crags() do
       {:ok, crags} ->
         # Insert each crag into the database
         Enum.each(crags, fn crag ->
           Repo.insert!(crag, on_conflict: :nothing)
         end)
+
         Logger.info("Loaded #{length(crags)} crags successfully.")
+
       {:error, reason} ->
         # If loading fails, we crash the entire startup process.
         Logger.emergency("Failed to load crag data: #{inspect(reason)}")

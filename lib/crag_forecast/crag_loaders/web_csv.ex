@@ -5,10 +5,8 @@ defmodule CragForecast.CragLoaders.WebCSV do
 
   @behaviour CragForecast.CragLoader
 
-
-
   def load_crags() do
-    case HTTPoison.get(@url, [], [follow_redirect: true]) do
+    case HTTPoison.get(@url, [], follow_redirect: true) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, parse_csv(body)}
 

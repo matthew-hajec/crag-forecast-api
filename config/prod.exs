@@ -9,7 +9,9 @@ config :crag_forecast,
   ecto_repos: [CragForecast.Repo]
 
 config :crag_forecast, CragForecast.CragLoaders.WebCSV,
-  url: System.get_env("CRAG_CSV_URL") || "https://docs.google.com/spreadsheets/d/e/2PACX-1vQX23tF6CLyQHv8FtCQ54MdGeTtQb-gMNgMpOE-lCiZS4uP9D-6OaswesxP4M2oZrZuJrW7PMThYEJb/pub?output=csv"
+  url:
+    System.get_env("CRAG_CSV_URL") ||
+      "https://docs.google.com/spreadsheets/d/e/2PACX-1vQX23tF6CLyQHv8FtCQ54MdGeTtQb-gMNgMpOE-lCiZS4uP9D-6OaswesxP4M2oZrZuJrW7PMThYEJb/pub?output=csv"
 
 config :crag_forecast, CragForecast.Repo,
   database: ":memory:",

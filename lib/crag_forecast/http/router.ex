@@ -27,7 +27,11 @@ defmodule CragForecast.HTTP.Router do
     end
 
     get "/dev/nearby_crags/:lat/:lon/:radius" do
-      CragForecast.HTTP.DevHandlers.handle_get_nearby_crags(conn, %{"lat" => lat, "lon" => lon, "radius" => radius})
+      CragForecast.HTTP.DevHandlers.handle_get_nearby_crags(conn, %{
+        "lat" => lat,
+        "lon" => lon,
+        "radius" => radius
+      })
     end
   end
 

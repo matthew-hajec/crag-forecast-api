@@ -11,17 +11,20 @@ defmodule CragForecast.CragProviders.EctoProvider do
 
     # 1. Query crags within the smallest bounding box containing the circle
     query =
-      from c in Crag,
-      where: c.latitude >= ^min_lat and c.latitude <= ^max_lat and
-             c.longitude >= ^min_lon and c.longitude <= ^max_lon
+      from(c in Crag,
+        where:
+          c.latitude >= ^min_lat and c.latitude <= ^max_lat and
+            c.longitude >= ^min_lon and c.longitude <= ^max_lon
+      )
 
     try do
       crags = CragForecast.Repo.all(query)
 
       # 2. Filter the results to those within the exact radius using Haversine formula
-      crags = Enum.filter(crags, fn crag ->
-        haversine_distance(latitude, longitude, crag.latitude, crag.longitude) <= radius_km
-      end)
+      crags =
+        Enum.filter(crags, fn crag ->
+          haversine_distance(latitude, longitude, crag.latitude, crag.longitude) <= radius_km
+        end)
 
       {:ok, crags}
     catch
@@ -45,23 +48,28 @@ defmodule CragForecast.CragProviders.EctoProvider do
     lon_delta = radius_km / km_per_degree_lon
 
     {
-      latitude - lat_delta, # min latitude
-      latitude + lat_delta, # max latitude
-      longitude - lon_delta, # min longitude
-      longitude + lon_delta  # max longitude
+      # min latitude
+      latitude - lat_delta,
+      # max latitude
+      latitude + lat_delta,
+      # min longitude
+      longitude - lon_delta,
+      # max longitude
+      longitude + lon_delta
     }
   end
 
   defp haversine_distance(lat1, lon1, lat2, lon2) do
-    r = 6371.0 # Earth's radius in kilometers
+    # Earth's radius in kilometers
+    r = 6371.0
 
     dlat = :math.pi() * (lat2 - lat1) / 180.0
     dlon = :math.pi() * (lon2 - lon1) / 180.0
 
     a =
       :math.sin(dlat / 2) * :math.sin(dlat / 2) +
-      :math.cos(:math.pi() * lat1 / 180.0) * :math.cos(:math.pi() * lat2 / 180.0) *
-      :math.sin(dlon / 2) * :math.sin(dlon / 2)
+        :math.cos(:math.pi() * lat1 / 180.0) * :math.cos(:math.pi() * lat2 / 180.0) *
+          :math.sin(dlon / 2) * :math.sin(dlon / 2)
 
     c = 2 * :math.atan2(:math.sqrt(a), :math.sqrt(1 - a))
 

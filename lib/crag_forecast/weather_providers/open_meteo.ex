@@ -2,13 +2,13 @@ defmodule CragForecast.WeatherProviders.OpenMeteo do
   @behaviour CragForecast.WeatherProvider
 
   def form_request_url(lat, lon) do
-    "https://api.open-meteo.com/v1/forecast"
-    <> "?latitude=#{lat}"
-    <> "&longitude=#{lon}"
-    <> "&forecast_days=3"
-    <> "&past_days=2"
-    <> "&timezone=auto"
-    <> "&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,relative_humidity_2m_max"
+    "https://api.open-meteo.com/v1/forecast" <>
+      "?latitude=#{lat}" <>
+      "&longitude=#{lon}" <>
+      "&forecast_days=3" <>
+      "&past_days=2" <>
+      "&timezone=auto" <>
+      "&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,relative_humidity_2m_max"
   end
 
   def get_weather_window(lat, lon) do
@@ -22,17 +22,19 @@ defmodule CragForecast.WeatherProviders.OpenMeteo do
         t_mins = json["daily"]["temperature_2m_min"]
         p_maxes = json["daily"]["precipitation_probability_max"]
 
-        weather_window = Enum.zip([dates, t_maxes, t_mins, p_maxes, rh_maxes])
-        |> Enum.map(fn {date, t_max, t_min, p_max, rh_max} ->
-          %{
-            "date" => date,
-            "max_temperature_c" => t_max,
-            "min_temperature_c" => t_min,
-            "max_precipitation_probability" => p_max,
-            "max_humidity_percent" => rh_max,
-            "condition" => :overcast # Placeholder condition
-          }
-        end)
+        weather_window =
+          Enum.zip([dates, t_maxes, t_mins, p_maxes, rh_maxes])
+          |> Enum.map(fn {date, t_max, t_min, p_max, rh_max} ->
+            %{
+              "date" => date,
+              "max_temperature_c" => t_max,
+              "min_temperature_c" => t_min,
+              "max_precipitation_probability" => p_max,
+              "max_humidity_percent" => rh_max,
+              # Placeholder condition
+              "condition" => :overcast
+            }
+          end)
 
         {:ok, weather_window}
 
