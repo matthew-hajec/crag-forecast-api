@@ -7,6 +7,7 @@ config :crag_forecast,
   use_dev_routes: false,
   weather_provider: CragForecast.WeatherProviders.OpenMeteo,
   crag_loader: CragForecast.CragLoaders.WebCSV,
+  crag_provider: CragForecast.CragProviders.EctoProvider,
   ecto_repos: [CragForecast.Repo]
 
 config :crag_forecast, CragForecast.CragLoaders.WebCSV,
