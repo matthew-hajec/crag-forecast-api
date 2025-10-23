@@ -18,3 +18,6 @@ config :crag_forecast, CragForecast.CragLoaders.WebCSV,
 config :crag_forecast, CragForecast.Repo,
   database: ":memory:",
   pool_size: 1
+
+# Configure production logging level
+config :logger, level: :info
