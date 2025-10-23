@@ -8,6 +8,9 @@ defmodule CragForecast.Application do
 
   @impl true
   def start(_type, _args) do
+    # Print a startup message
+    Logger.info("Starting CragForecast Application with #{Mix.env()} configuration...")
+
     # 1. Define only the core children needed for setup (just the Repo)
     core_children = [
       CragForecast.Repo
