@@ -1,4 +1,5 @@
 defmodule CragForecast.Application do
+  alias CragForecast.Repo
   @crag_loader Application.compile_env(:crag_forecast, :crag_loader)
   @port Application.compile_env(:crag_forecast, :port)
 
@@ -44,6 +45,10 @@ defmodule CragForecast.Application do
     Logger.info("Loading crag data...")
     case @crag_loader.load_crags() do
       {:ok, crags} ->
+        # Insert each crag into the database
+        Enum.each(crags, fn crag ->
+          Repo.insert!(crag, on_conflict: :nothing)
+        end)
         Logger.info("Loaded #{length(crags)} crags successfully.")
       {:error, reason} ->
         # If loading fails, we crash the entire startup process.
