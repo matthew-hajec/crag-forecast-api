@@ -14,11 +14,15 @@ defmodule CragForecast.HTTP.Router do
   # Development-only routes
   if @use_dev_routes do
     get "/dev/ping" do
-      CragForecast.HTTP.DevHandlers.handle_dev_ping(conn)
+      CragForecast.HTTP.DevHandlers.handle_ping(conn)
     end
 
     get "/dev/weather/:lat/:lon" do
-      CragForecast.HTTP.DevHandlers.handle_dev_weather(conn, %{"lat" => lat, "lon" => lon})
+      CragForecast.HTTP.DevHandlers.handle_weather(conn, %{"lat" => lat, "lon" => lon})
+    end
+
+    get "/dev/nearby_crags/:lat/:lon/:radius" do
+      CragForecast.HTTP.DevHandlers.handle_get_nearby_crags(conn, %{"lat" => lat, "lon" => lon, "radius" => radius})
     end
   end
 
