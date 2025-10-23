@@ -21,6 +21,9 @@ config :crag_forecast, CragForecast.Repo,
   database: ":memory:",
   pool_size: 1
 
+# Configure logging level
+config :logger, level: :info
+
 # Import environment-specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"
