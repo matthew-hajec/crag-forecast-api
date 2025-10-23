@@ -8,11 +8,14 @@ config :crag_forecast,
   weather_provider: CragForecast.WeatherProviders.OpenMeteo,
   crag_loader: CragForecast.CragLoaders.WebCSV,
   crag_provider: CragForecast.CragProviders.EctoProvider,
+  forecast_provider: CragForecast.ForecastProviders.DefaultProvider,
   ecto_repos: [CragForecast.Repo]
 
 config :crag_forecast, CragForecast.CragLoaders.WebCSV,
   url:
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQX23tF6CLyQHv8FtCQ54MdGeTtQb-gMNgMpOE-lCiZS4uP9D-6OaswesxP4M2oZrZuJrW7PMThYEJb/pub?output=csv"
+
+config :crag_forecast, CragForecast.HTTP, max_radius_km: 1000
 
 config :crag_forecast, CragForecast.Repo,
   database: ":memory:",

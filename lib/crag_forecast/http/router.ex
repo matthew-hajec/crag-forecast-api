@@ -12,8 +12,12 @@ defmodule CragForecast.HTTP.Router do
     Plug.Conn.put_resp_content_type(conn, "application/json")
   end
 
-  get "/forecast/:lat/:lon" do
-    CragForecast.HTTP.Handlers.handle_get_forecast(conn, %{"lat" => lat, "lon" => lon})
+  get "/forecast/:lat/:lon/:radius" do
+    CragForecast.HTTP.Handlers.handle_get_forecast(conn, %{
+      "lat" => lat,
+      "lon" => lon,
+      "radius" => radius
+    })
   end
 
   # Development-only routes

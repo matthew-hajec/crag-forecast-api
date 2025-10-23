@@ -16,4 +16,14 @@ defmodule CragForecast.HTTP.Validation do
       :error -> raise ArgumentError, "Invalid latitude or longitude"
     end
   end
+
+  def parse_radius(radius, max_radius) do
+    case Integer.parse(radius) do
+      {radius_value, ""} when radius_value >= 0 and radius_value <= max_radius ->
+        {:ok, radius_value}
+
+      _ ->
+        :error
+    end
+  end
 end

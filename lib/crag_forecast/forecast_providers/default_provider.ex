@@ -20,20 +20,19 @@ defmodule CragForecast.ForecastProviders.DefaultProvider do
 
   defp get_forecasts(crags) do
     Enum.map(crags, fn crag ->
-      case @weather_provider.get_weather_window(crag.latitude, crag.longitude) do
-        {:ok, weather_window} ->
-          {:ok, %{crag: crag, weather_window: weather_window}}
+      Task.async(fn ->
+        case @weather_provider.get_weather_window(crag.latitude, crag.longitude) do
+          {:ok, weather_window} ->
+            {:ok, %{crag: crag, weather_window: weather_window}}
 
-        {:error, reason} ->
-          Logger.warning("Failed to fetch weather info for: #{crag}")
-          {:error, reason}
-      end
+          {:error, reason} ->
+            Logger.warning("Failed to fetch weather info for: #{crag}")
+            {:error, reason}
+        end
+      end)
     end)
-    |> Enum.filter(fn
-      {:ok, _} -> true
-      {:error, _} -> false
-    end)
-    # Remove the {:ok, ...} wrapper
+    |> Enum.map(fn task -> Task.await(task, 5_000) end)
+    |> Enum.filter(fn {:ok, _} -> true; {:error, _} -> false end)
     |> Enum.map(fn {:ok, forecast} -> forecast end)
   end
 end
