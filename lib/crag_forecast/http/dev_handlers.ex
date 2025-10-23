@@ -21,12 +21,10 @@ defmodule CragForecast.HTTP.DevHandlers do
     case @weather_provider.get_weather_window(lat, lon) do
       {:ok, weather} ->
         conn
-        |> Plug.Conn.put_resp_content_type("application/json")
         |> Plug.Conn.send_resp(200, Jason.encode!(weather))
 
       {:error, error_msg} ->
         conn
-        |> Plug.Conn.put_resp_content_type("application/json")
         |> Plug.Conn.send_resp(500, Jason.encode!(%{"error" => error_msg}))
     end
   end
@@ -38,12 +36,10 @@ defmodule CragForecast.HTTP.DevHandlers do
     case @crag_provider.get_nearby_crags(lat, lon, radius_km) do
       {:ok, crags} ->
         conn
-        |> Plug.Conn.put_resp_content_type("application/json")
         |> Plug.Conn.send_resp(200, Jason.encode!(%{"crags" => crags}))
 
       {:error, error_msg} ->
         conn
-        |> Plug.Conn.put_resp_content_type("application/json")
         |> Plug.Conn.send_resp(500, Jason.encode!(%{"error" => error_msg}))
     end
   end

@@ -3,9 +3,14 @@ defmodule CragForecast.HTTP.Router do
 
   use Plug.Router
 
+  plug(:json_content_type)
   plug(Plug.Logger)
   plug(:match)
   plug(:dispatch)
+
+  defp json_content_type(conn, _opts) do
+    Plug.Conn.put_resp_content_type(conn, "application/json")
+  end
 
   get "/forecast/:lat/:lon" do
     CragForecast.HTTP.Handlers.handle_get_forecast(conn, %{"lat" => lat, "lon" => lon})
