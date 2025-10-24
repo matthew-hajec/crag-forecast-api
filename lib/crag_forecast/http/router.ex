@@ -20,11 +20,13 @@ defmodule CragForecast.HTTP.Router do
     |> Plug.Conn.put_resp_header("access-control-allow-origin", allowed_origins)
   end
 
-  get "/forecast/:lat/:lon/:radius" do
+  get "/forecast/:lat/:lon/:radius/:offset/:limit" do
     CragForecast.HTTP.Handlers.handle_get_forecast(conn, %{
       "lat" => lat,
       "lon" => lon,
-      "radius" => radius
+      "radius" => radius,
+      "offset" => offset,
+      "limit" => limit
     })
   end
 

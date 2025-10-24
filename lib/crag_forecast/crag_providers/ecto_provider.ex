@@ -6,7 +6,7 @@ defmodule CragForecast.CragProviders.EctoProvider do
   @behaviour CragForecast.CragProvider
 
   @impl true
-  def get_nearby_crags(latitude, longitude, radius_km) do
+  def get_nearby_crags(latitude, longitude, radius_km, offset, limit) do
     {min_lat, max_lat, min_lon, max_lon} = geo_bounding_box(latitude, longitude, radius_km)
 
     # 1. Query crags within the smallest bounding box containing the circle
@@ -25,6 +25,15 @@ defmodule CragForecast.CragProviders.EctoProvider do
         Enum.filter(crags, fn crag ->
           haversine_distance(latitude, longitude, crag.latitude, crag.longitude) <= radius_km
         end)
+
+      # 3. Order the crags by distance
+      crags =
+        Enum.sort_by(crags, fn crag ->
+          haversine_distance(latitude, longitude, crag.latitude, crag.longitude)
+        end)
+
+      # 4. Apply offset and limit for pagination
+      crags = crags |> Enum.slice(offset, limit)
 
       {:ok, crags}
     catch

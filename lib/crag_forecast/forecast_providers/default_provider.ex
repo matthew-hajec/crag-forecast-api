@@ -8,8 +8,8 @@ defmodule CragForecast.ForecastProviders.DefaultProvider do
   @behaviour CragForecast.ForecastProvider
 
   @impl true
-  def get_forecasts(latitude, longitude, radius_km) do
-    case @crag_provider.get_nearby_crags(latitude, longitude, radius_km) do
+  def get_forecasts(latitude, longitude, radius_km, offset \\ 0, limit \\ 10) do
+    case @crag_provider.get_nearby_crags(latitude, longitude, radius_km, offset, limit) do
       {:ok, crags} ->
         {:ok, get_forecasts(crags)}
 

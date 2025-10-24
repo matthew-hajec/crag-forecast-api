@@ -26,4 +26,24 @@ defmodule CragForecast.HTTP.Validation do
         :error
     end
   end
+
+  def parse_offset(offset, max_offset) do
+    case Integer.parse(offset) do
+      {offset_value, ""} when offset_value >= 0 and offset_value <= max_offset ->
+        {:ok, offset_value}
+
+      _ ->
+        :error
+    end
+  end
+
+  def parse_limit(limit, max_limit) do
+    case Integer.parse(limit) do
+      {limit_value, ""} when limit_value > 0 and limit_value <= max_limit ->
+        {:ok, limit_value}
+
+      _ ->
+        :error
+    end
+  end
 end

@@ -6,10 +6,12 @@ defmodule CragForecast.HTTP.Handlers do
   """
   alias CragForecast.HTTP.Validation
 
-  def handle_get_forecast(conn, %{"lat" => lat, "lon" => lon, "radius" => radius}) do
+  def handle_get_forecast(conn, %{"lat" => lat, "lon" => lon, "radius" => radius, "offset" => offset, "limit" => limit}) do
     with {:ok, lat, lon} <- Validation.parse_lat_lon(%{"lat" => lat, "lon" => lon}),
-         {:ok, radius} <- Validation.parse_radius(radius, @max_radius_km) do
-      {:ok, forecasts} = @forecast_provider.get_forecasts(lat, lon, radius)
+         {:ok, radius} <- Validation.parse_radius(radius, @max_radius_km),
+         {:ok, offset} <- Validation.parse_offset(offset),
+         {:ok, limit} <- Validation.parse_limit(limit) do
+      {:ok, forecasts} = @forecast_provider.get_forecasts(lat, lon, radius, offset, limit)
 
       conn
       |> Plug.Conn.send_resp(200, Jason.encode!(forecasts))
