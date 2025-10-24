@@ -32,7 +32,10 @@ defmodule CragForecast.ForecastProviders.DefaultProvider do
       end)
     end)
     |> Enum.map(fn task -> Task.await(task, 5_000) end)
-    |> Enum.filter(fn {:ok, _} -> true; {:error, _} -> false end)
+    |> Enum.filter(fn
+      {:ok, _} -> true
+      {:error, _} -> false
+    end)
     |> Enum.map(fn {:ok, forecast} -> forecast end)
   end
 end
