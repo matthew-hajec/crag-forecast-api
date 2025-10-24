@@ -1,14 +1,14 @@
 defmodule CragForecast.Application do
   alias CragForecast.Repo
   @crag_loader Application.compile_env(:crag_forecast, :crag_loader)
-  @port Application.compile_env(:crag_forecast, :port)
-
   require Logger
 
   use Application
 
   @impl true
   def start(_type, _args) do
+    port = Application.get_env(:crag_forecast, :port)
+
     # Print a startup message
     Logger.info("Starting CragForecast Application with #{Mix.env()} configuration...")
 
@@ -25,7 +25,7 @@ defmodule CragForecast.Application do
     run_database_setup()
 
     # 4. If setup is successful, dynamically start the web server
-    web_server_child_spec = {Bandit, plug: CragForecast.HTTP.Router, scheme: :http, port: @port}
+    web_server_child_spec = {Bandit, plug: CragForecast.HTTP.Router, scheme: :http, port: port}
 
     case Supervisor.start_child(pid, web_server_child_spec) do
       {:ok, _web_pid} ->

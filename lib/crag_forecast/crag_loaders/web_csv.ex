@@ -1,12 +1,12 @@
 defmodule CragForecast.CragLoaders.WebCSV do
   alias NimbleCSV.RFC4180, as: CSV
 
-  @url Application.compile_env(:crag_forecast, CragForecast.CragLoaders.WebCSV)[:url]
-
   @behaviour CragForecast.CragLoader
 
   def load_crags() do
-    case HTTPoison.get(@url, [], follow_redirect: true) do
+    url = Application.get_env(:crag_forecast, CragForecast.CragLoaders.WebCSV)[:url]
+
+    case HTTPoison.get(url, [], follow_redirect: true) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, parse_csv(body)}
 

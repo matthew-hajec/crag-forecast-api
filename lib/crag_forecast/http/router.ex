@@ -4,12 +4,20 @@ defmodule CragForecast.HTTP.Router do
   use Plug.Router
 
   plug(:json_content_type)
+  plug(:cors_headers)
   plug(Plug.Logger)
   plug(:match)
   plug(:dispatch)
 
   defp json_content_type(conn, _opts) do
     Plug.Conn.put_resp_content_type(conn, "application/json")
+  end
+
+  defp cors_headers(conn, _opts) do
+    allowed_origins = Application.get_env(:crag_forecast, CragForecast.HTTP)[:cors_allowed_origins]
+
+    conn
+    |> Plug.Conn.put_resp_header("access-control-allow-origin", allowed_origins)
   end
 
   get "/forecast/:lat/:lon/:radius" do
