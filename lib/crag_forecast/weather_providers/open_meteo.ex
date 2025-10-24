@@ -5,8 +5,8 @@ defmodule CragForecast.WeatherProviders.OpenMeteo do
     "https://api.open-meteo.com/v1/forecast" <>
       "?latitude=#{lat}" <>
       "&longitude=#{lon}" <>
-      "&forecast_days=3" <>
-      "&past_days=2" <>
+      "&forecast_days=4" <>
+      "&past_days=1" <>
       "&timezone=auto" <>
       "&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,relative_humidity_2m_max"
   end
