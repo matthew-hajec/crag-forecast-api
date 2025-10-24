@@ -12,6 +12,8 @@ config :crag_forecast,
 
 config :crag_forecast, CragForecast.HTTP,
   max_radius_km: 1000,
+  max_offset: 1000,
+  max_limit: 20,
   cors_allowed_origins: "*"
 
 config :crag_forecast, CragForecast.Repo,

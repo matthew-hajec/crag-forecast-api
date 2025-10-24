@@ -1,6 +1,8 @@
 defmodule CragForecast.HTTP.Handlers do
   @forecast_provider Application.compile_env(:crag_forecast, :forecast_provider)
   @max_radius_km Application.compile_env(:crag_forecast, CragForecast.HTTP)[:max_radius_km]
+  @max_offset Application.compile_env(:crag_forecast, CragForecast.HTTP)[:max_offset]
+  @max_limit Application.compile_env(:crag_forecast, CragForecast.HTTP)[:max_limit]
   @moduledoc """
   HTTP handlers for CragForecast application.
   """
@@ -9,8 +11,8 @@ defmodule CragForecast.HTTP.Handlers do
   def handle_get_forecast(conn, %{"lat" => lat, "lon" => lon, "radius" => radius, "offset" => offset, "limit" => limit}) do
     with {:ok, lat, lon} <- Validation.parse_lat_lon(%{"lat" => lat, "lon" => lon}),
          {:ok, radius} <- Validation.parse_radius(radius, @max_radius_km),
-         {:ok, offset} <- Validation.parse_offset(offset),
-         {:ok, limit} <- Validation.parse_limit(limit) do
+         {:ok, offset} <- Validation.parse_offset(offset, @max_offset),
+         {:ok, limit} <- Validation.parse_limit(limit, @max_limit) do
       {:ok, forecasts} = @forecast_provider.get_forecasts(lat, lon, radius, offset, limit)
 
       conn
