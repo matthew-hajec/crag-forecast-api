@@ -16,6 +16,7 @@ defmodule CragForecast.WeatherProviders.OpenMeteo do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         json = Jason.decode!(body)
 
+        iana_timezone = json["timezone"]
         dates = json["daily"]["time"]
         rh_maxes = json["daily"]["relative_humidity_2m_max"]
         t_maxes = json["daily"]["temperature_2m_max"]
@@ -26,6 +27,7 @@ defmodule CragForecast.WeatherProviders.OpenMeteo do
           Enum.zip([dates, t_maxes, t_mins, p_maxes, rh_maxes])
           |> Enum.map(fn {date, t_max, t_min, p_max, rh_max} ->
             %{
+              "timezone" => iana_timezone,
               "date" => date,
               "max_temperature_c" => t_max,
               "min_temperature_c" => t_min,

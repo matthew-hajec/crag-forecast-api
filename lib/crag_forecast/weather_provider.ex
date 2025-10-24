@@ -9,6 +9,7 @@ defmodule CragForecast.WeatherProvider do
   A list of weather data points for specific dates.
 
   Each data point is a map containing:
+    - `:timezone` - The IANA timezone string (String).
     - `:date` - The date of the forecast in the format "YYYY-MM-DD" (String).
     - `:max_temperature_c` - Maximum temperature in Celsius (float).
     - `:min_temperature_c` - Minimum temperature in Celsius (float).
@@ -18,6 +19,7 @@ defmodule CragForecast.WeatherProvider do
   """
   @type weather_window :: [
           %{
+            timezone: String.t(),
             date: String.t(),
             max_temperature_c: float(),
             min_temperature_c: float(),
