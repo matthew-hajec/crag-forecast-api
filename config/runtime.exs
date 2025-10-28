@@ -11,14 +11,10 @@ default_crag_csv_url =
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vQesdJZcm3BSpD3mUqkZuIx7eN7y7dGH4CspZJhFuTZQn53_PxIwccDcbcg-Gjse0Pf0rVsznr1LnFk/pub?output=csv"
   end
 
-defp parse_allowed_origins(origins) do
-  origins
-  |> String.split(",", trim: true)
-  |> Enum.map(&String.trim/1)
-end
-
 config :crag_forecast, CragForecast.CragLoaders.WebCSV,
   url: System.get_env("CRAG_CSV_URL") || default_crag_csv_url
 
 config :crag_forecast, CragForecast.HTTP,
-  cors_allowed_origins: parse_allowed_origins(System.get_env("CORS_ALLOWED_ORIGINS")) || ["*"]
+  cors_allowed_origins: (System.get_env("CORS_ALLOWED_ORIGINS") || ["*"])
+  |> String.split(",", trim: true)
+  |> Enum.map(&String.trim/1)
