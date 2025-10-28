@@ -14,10 +14,18 @@ defmodule CragForecast.HTTP.Router do
   end
 
   defp cors_headers(conn, _opts) do
-    allowed_origins = Application.get_env(:crag_forecast, CragForecast.HTTP)[:cors_allowed_origins]
+    allowed_origins =
+      Application.get_env(:crag_forecast, CragForecast.HTTP)[:cors_allowed_origins]
 
-    conn
-    |> Plug.Conn.put_resp_header("access-control-allow-origin", allowed_origins)
+    request_origin = Plug.Conn.get_req_header(conn, "Origin") |> List.first()
+
+    if request_origin in allowed_origins do
+      conn
+      |> Plug.Conn.put_resp_header("Access-Control-Allow-Origin", request_origin)
+    else
+      conn
+      |> Plug.Conn.put_resp_header("Access-Control-Allow-Origin", List.first(allowed_origins))
+    end
   end
 
   get "/forecast/:lat/:lon/:radius/:offset/:limit" do

@@ -33,7 +33,7 @@ defmodule CragForecast.HTTP.DevHandlers do
     {lat, lon} = Validation.parse_lat_lon!(%{"lat" => lat, "lon" => lon})
     radius_km = String.to_integer(radius)
 
-    case @crag_provider.get_nearby_crags(lat, lon, radius_km, 999999, 999999) do
+    case @crag_provider.get_nearby_crags(lat, lon, radius_km, 999_999, 999_999) do
       {:ok, crags} ->
         conn
         |> Plug.Conn.send_resp(200, Jason.encode!(%{"crags" => crags}))

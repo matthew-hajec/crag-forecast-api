@@ -26,7 +26,10 @@ defmodule CragForecast.ForecastProviders.DefaultProvider do
             {:ok, %{crag: crag, weather_window: weather_window}}
 
           {:error, reason} ->
-            Logger.warning("Failed to fetch weather info for: #{crag.name} at (#{crag.latitude}, #{crag.longitude}): #{inspect(reason)}")
+            Logger.warning(
+              "Failed to fetch weather info for: #{crag.name} at (#{crag.latitude}, #{crag.longitude}): #{inspect(reason)}"
+            )
+
             {:error, reason}
         end
       end)

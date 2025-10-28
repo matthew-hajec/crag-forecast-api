@@ -17,6 +17,12 @@ defmodule CragForecast.CragProvider do
     - `{:ok, crags}`: A tuple containing a list of nearby crags.
     - `{:error, reason}`: A tuple indicating an error occurred.
   """
-  @callback get_nearby_crags(float(), float(), non_neg_integer(), non_neg_integer(), pos_integer()) ::
+  @callback get_nearby_crags(
+              float(),
+              float(),
+              non_neg_integer(),
+              non_neg_integer(),
+              pos_integer()
+            ) ::
               {:ok, [CragForecast.Crag.t()]} | {:error, term()}
 end

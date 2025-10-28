@@ -21,7 +21,8 @@ defmodule CragForecast.CragLoaders.WebCSV do
   defp parse_csv(csv_content) do
     csv_content
     |> CSV.parse_string()
-    |> Enum.map(fn row -> Enum.take(row, 5) end) # Drop extra columns if any
+    # Drop extra columns if any
+    |> Enum.map(fn row -> Enum.take(row, 5) end)
     |> Enum.map(fn [name, region, country, lat, lon] ->
       %CragForecast.Crag{
         name: name,
