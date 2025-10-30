@@ -15,6 +15,6 @@ config :crag_forecast, CragForecast.CragLoaders.WebCSV,
   url: System.get_env("CRAG_CSV_URL") || default_crag_csv_url
 
 config :crag_forecast, CragForecast.HTTP,
-  cors_allowed_origins: (System.get_env("CORS_ALLOWED_ORIGINS") || ["*"])
+  cors_allowed_origins: (System.get_env("CORS_ALLOWED_ORIGINS") || "*")
   |> String.split(",", trim: true)
   |> Enum.map(&String.trim/1)
