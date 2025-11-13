@@ -17,7 +17,7 @@ defmodule CragForecast.HTTP.Router do
     allowed_origins =
       Application.get_env(:crag_forecast, CragForecast.HTTP)[:cors_allowed_origins]
 
-    request_origin = Plug.Conn.get_req_header(conn, "Origin") |> List.first()
+    request_origin = Plug.Conn.get_req_header(conn, "origin") |> List.first()
 
     # Log allowed and request origins for debugging
     IO.inspect(allowed_origins, label: "Allowed Origins")
