@@ -5,6 +5,7 @@ defmodule CragForecast.HTTP.Router do
 
   plug(:json_content_type)
   plug(:cors_headers)
+  plug(:cache_control_header)
   plug(Plug.Logger)
   plug(:match)
   plug(:dispatch)
@@ -26,6 +27,11 @@ defmodule CragForecast.HTTP.Router do
       conn
       |> Plug.Conn.put_resp_header("Access-Control-Allow-Origin", List.first(allowed_origins))
     end
+  end
+
+  def cache_control_header(conn, _opts) do
+    ttl_seconds = Application.get_env(:crag_forecast, CragForecast.HTTP)[:response_cache_ttl_seconds]
+    Plug.Conn.put_resp_header(conn, "cache-control", "public, max-age=#{ttl_seconds}")
   end
 
   get "/forecast/:lat/:lon/:radius/:offset/:limit" do

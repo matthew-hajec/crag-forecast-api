@@ -17,4 +17,5 @@ config :crag_forecast, CragForecast.CragLoaders.WebCSV,
 config :crag_forecast, CragForecast.HTTP,
   cors_allowed_origins: (System.get_env("CORS_ALLOWED_ORIGINS") || "*")
   |> String.split(",", trim: true)
-  |> Enum.map(&String.trim/1)
+  |> Enum.map(&String.trim/1),
+  response_cache_ttl_seconds: String.to_integer(System.get_env("RESPONSE_CACHE_TTL_SECONDS") || "3600")
