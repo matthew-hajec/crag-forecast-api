@@ -1,14 +1,22 @@
 defmodule CragForecast.CragLoaders.WebCSV do
+  require Logger
+
   alias NimbleCSV.RFC4180, as: CSV
 
   @behaviour CragForecast.CragLoader
 
   def load_crags() do
+    Logger.info("Fetching crag data from web CSV...")
+    start_tm = :os.system_time(:millisecond)
+
     url = Application.get_env(:crag_forecast, CragForecast.CragLoaders.WebCSV)[:url]
 
     case HTTPoison.get(url, [], follow_redirect: true) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        {:ok, parse_csv(body)}
+        parsed = parse_csv(body)
+        end_tm = :os.system_time(:millisecond)
+        Logger.info("Fetched and parsed #{length(parsed)} crags in #{end_tm - start_tm} ms.")
+        {:ok, parsed}
 
       {:ok, %HTTPoison.Response{status_code: status_code}} ->
         {:error, "Failed to fetch CSV data. Status code: #{status_code}"}
@@ -28,8 +36,8 @@ defmodule CragForecast.CragLoaders.WebCSV do
         name: name,
         region: region,
         country: country,
-        latitude: String.to_float(lat),
-        longitude: String.to_float(lon)
+        latitude: Float.parse(lat) |> elem(0),
+        longitude: Float.parse(lon) |> elem(0)
       }
     end)
   end
