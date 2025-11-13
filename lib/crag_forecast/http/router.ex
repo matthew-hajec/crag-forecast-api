@@ -19,6 +19,11 @@ defmodule CragForecast.HTTP.Router do
 
     request_origin = Plug.Conn.get_req_header(conn, "Origin") |> List.first()
 
+    # Log allowed and request origins for debugging
+    IO.inspect(allowed_origins, label: "Allowed Origins")
+    IO.inspect(request_origin, label: "Request Origin")
+
+
     if request_origin in allowed_origins do
       conn
       |> Plug.Conn.put_resp_header("Access-Control-Allow-Origin", request_origin)
