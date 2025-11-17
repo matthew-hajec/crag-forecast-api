@@ -3,7 +3,7 @@ defmodule CragForecast.WeatherProvider do
   Provides weather forecast data for given latitude and longitude.
   """
 
-  @type condition :: :sunny | :overcast | :rainy | :snowy | :hail | :thunderstorm
+  @type wmo_code :: integer()
 
   @typedoc """
   A list of weather data points for specific dates.
@@ -15,7 +15,7 @@ defmodule CragForecast.WeatherProvider do
     - `:min_temperature_c` - Minimum temperature in Celsius (float).
     - `:max_humidity_percent` - Maximum relative humidity percentage (float).
     - `:max_precipitation_probability` - Maximum precipitation probability percentage (float).
-    - `:condition` - Weather condition (condition()).
+    - `:wmo_code` - MO weather code (wmo_code()).
   """
   @type weather_window :: [
           %{
@@ -25,7 +25,7 @@ defmodule CragForecast.WeatherProvider do
             min_temperature_c: float(),
             max_humidity_percent: float(),
             max_precipitation_probability: float(),
-            condition: condition()
+            wmo_code: wmo_code()
           }
         ]
 
