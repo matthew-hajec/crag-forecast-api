@@ -15,12 +15,14 @@ In production, it exposes ONE route:
 Get a list of crags, alongside their weather information, within `radius_km` of the coordinate pair (`latitude`, `longitude`).
 
 #### URL:
-- `/forecast/{latitude}/{longitude}/{radius_km}`
+- `/forecast/{latitude}/{longitude}/{radius_km}/{offset}/{limit}`
 
 #### Paramters:
 - `latitude` is a float between -90 and 90.
 - `longitude` is a float between -180 and 180.
 - `radius_km` is an integer between 0 and 1000.
+- `offset` is an integer between 0 and 1000.
+- `limit` is an integer between 0 and 20.
 
 #### Responses:
 ##### Success:
