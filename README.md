@@ -45,5 +45,5 @@ These defaults are for when `MIX_ENV=prod`. See `config/config.exs`.
   - Default: `4000`
 - `CRAG_CSV_URL` (string): URL for a list of routes.
   - Default: `https://docs.google.com/spreadsheets/d/e/2PACX-1vQX23tF6CLyQHv8FtCQ54MdGeTtQb-gMNgMpOE-lCiZS4uP9D-6OaswesxP4M2oZrZuJrW7PMThYEJb/pub?output=csv`
-- `CORS_ALLOWED_ORIGINS` (string): Value for the `Access-Control-Allow-Origin` header.
+- `CORS_ALLOWED_ORIGINS` (string): Value(s) for the `Access-Control-Allow-Origin` header. Multiple values can be supplied using a comma (`,`) seperator. 
   - Default: `*`
