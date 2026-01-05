@@ -30,14 +30,18 @@ defmodule CragForecast.CragLoaders.WebCSV do
     csv_content
     |> CSV.parse_string()
     # Drop extra columns if any
-    |> Enum.map(fn row -> Enum.take(row, 5) end)
-    |> Enum.map(fn [name, region, country, lat, lon] ->
+    |> Enum.map(fn row -> Enum.take(row, 9) end)
+    |> Enum.map(fn [name, region, country, lat, lon, nr_trad, nr_sport, nr_tr, nr_boulder] ->
       %CragForecast.Crag{
         name: name,
         region: region,
         country: country,
         latitude: Float.parse(lat) |> elem(0),
-        longitude: Float.parse(lon) |> elem(0)
+        longitude: Float.parse(lon) |> elem(0),
+        count_trad: Integer.parse(nr_trad) |> elem(0),
+        count_sport: Integer.parse(nr_sport) |> elem(0),
+        count_top_rope: Integer.parse(nr_tr) |> elem(0),
+        count_boulder: Integer.parse(nr_boulder) |> elem(0)
       }
     end)
   end
