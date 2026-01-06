@@ -6,6 +6,7 @@ defmodule CragForecast.HTTP.Handlers do
   @moduledoc """
   HTTP handlers for CragForecast application.
   """
+  require Logger
   alias CragForecast.HTTP.Validation
 
   def handle_get_forecast(conn, %{
@@ -19,10 +20,12 @@ defmodule CragForecast.HTTP.Handlers do
          {:ok, radius} <- Validation.parse_radius(radius, @max_radius_km),
          {:ok, offset} <- Validation.parse_offset(offset, @max_offset),
          {:ok, limit} <- Validation.parse_limit(limit, @max_limit) do
-      {:ok, forecasts} = @forecast_provider.get_forecasts(lat, lon, radius, offset, limit)
-
-      conn
-      |> Plug.Conn.send_resp(200, Jason.encode!(forecasts))
+      case @forecast_provider.get_forecasts(lat, lon, radius, offset, limit) do
+        {:ok, forecasts} ->
+          conn |> Plug.Conn.send_resp(200, Jason.encode!(forecasts))
+        {:error, reason} ->
+          conn |> Plug.Conn.send_resp(500, "{\"error\": \"Server failed to get forecasts.\" }")
+      end
     else
       :error ->
         conn
